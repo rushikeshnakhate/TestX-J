@@ -1,6 +1,9 @@
 package org.example.config;
 
+import com.solacesystems.jcsmp.JCSMPChannelProperties;
 import com.solacesystems.jcsmp.JCSMPProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,25 +11,29 @@ import org.springframework.context.annotation.Configuration;
  * Solace configuration
  */
 @Configuration
+@EnableConfigurationProperties(SolaceProperties.class)
 public class SolaceConfig {
-    
+
     @Bean
-    public JCSMPProperties jcsmpProperties(SolaceProperties properties) {
+    public JCSMPProperties jcsmpProperties(@Autowired SolaceProperties solaceProperties) {
         JCSMPProperties jcsmpProperties = new JCSMPProperties();
-        
-        jcsmpProperties.setProperty(JCSMPProperties.HOST, properties.host());
-        jcsmpProperties.setProperty(JCSMPProperties.USERNAME, properties.username());
-        jcsmpProperties.setProperty(JCSMPProperties.PASSWORD, properties.password());
-        jcsmpProperties.setProperty(JCSMPProperties.VPN_NAME, properties.vpn());
-        jcsmpProperties.setProperty(JCSMPProperties.CLIENT_NAME, properties.clientName());
-        
-        jcsmpProperties.setProperty(JCSMPProperties.CONNECT_TIMEOUT_MILLIS, properties.connectionTimeout());
-        jcsmpProperties.setProperty(JCSMPProperties.CONNECT_RETRIES, properties.connectionRetries());
-        jcsmpProperties.setProperty(JCSMPProperties.CONNECT_RETRY_WAIT_MS, properties.connectionRetryInterval());
-        
-        jcsmpProperties.setProperty(JCSMPProperties.MESSAGE_TTL, properties.messageTtl());
-        jcsmpProperties.setProperty(JCSMPProperties.MESSAGE_PRIORITY, properties.messagePriority());
-        
+
+        // Basic connection properties
+        jcsmpProperties.setProperty(JCSMPProperties.HOST, solaceProperties.host());
+        jcsmpProperties.setProperty(JCSMPProperties.USERNAME, solaceProperties.username());
+        jcsmpProperties.setProperty(JCSMPProperties.PASSWORD, solaceProperties.password());
+        jcsmpProperties.setProperty(JCSMPProperties.VPN_NAME, solaceProperties.vpn());
+        jcsmpProperties.setProperty(JCSMPProperties.CLIENT_NAME, solaceProperties.clientName());
+
+        // Connection timeout and retry properties - use JCSMPChannelProperties
+        JCSMPChannelProperties channelProperties = new JCSMPChannelProperties();
+        channelProperties.setConnectTimeoutInMillis(solaceProperties.connectionTimeout());
+        channelProperties.setConnectRetries(solaceProperties.connectionRetries());
+        channelProperties.setReconnectRetryWaitInMillis(solaceProperties.connectionRetryInterval());
+
+        // Assign the channel properties to the JCSMP properties
+        jcsmpProperties.setProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES, channelProperties);
+
         return jcsmpProperties;
     }
 }

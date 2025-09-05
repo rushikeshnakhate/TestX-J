@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 /**
  * Solace configuration properties
  */
-@Component
 @ConfigurationProperties(prefix = "solace")
 public record SolaceProperties(
         String host,
@@ -17,8 +16,6 @@ public record SolaceProperties(
         int connectionTimeout,
         int connectionRetries,
         int connectionRetryInterval,
-        int messageTtl,
-        int messagePriority,
         String defaultQueue,
         String defaultTopic
 ) {
