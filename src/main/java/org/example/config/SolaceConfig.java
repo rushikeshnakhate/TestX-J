@@ -2,7 +2,6 @@ package org.example.config;
 
 import com.solacesystems.jcsmp.JCSMPChannelProperties;
 import com.solacesystems.jcsmp.JCSMPProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 public class SolaceConfig {
 
     @Bean
-    public JCSMPProperties jcsmpProperties(@Autowired SolaceProperties solaceProperties) {
+    public JCSMPProperties jcsmpProperties(SolaceProperties solaceProperties) {
         JCSMPProperties jcsmpProperties = new JCSMPProperties();
 
         // Basic connection properties

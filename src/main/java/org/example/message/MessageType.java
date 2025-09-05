@@ -7,5 +7,6 @@ public enum MessageType {
     TEXT,
     JSON,
     PROTOBUF,
-    BINARY
+    BINARY,
+    FIX
 }
