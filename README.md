@@ -65,21 +65,31 @@ solace.client-name=TestClient
 
 ## Running the Application
 
-### 1. Run as Spring Boot Application
+### Option 1: Using Batch Files (Windows)
 ```bash
+# Run Spring Boot Application
+run-app.bat
+
+# Run Cucumber Tests
+run-tests.bat
+```
+
+### Option 2: Using Maven Commands
+```bash
+# Run as Spring Boot Application
 mvn spring-boot:run
-```
 
-### 2. Run Cucumber Tests
-```bash
+# Run Cucumber Tests
 mvn exec:java -Dexec.mainClass="org.example.TestRunner"
-```
 
-### 3. Build and Run JAR
-```bash
+# Build and Run JAR
 mvn clean package
 java -jar target/TestX-J-1.0-SNAPSHOT.jar
 ```
+
+### Option 3: Using IDE
+1. Run `TestApplication.java` as Spring Boot Application
+2. Run `TestRunner.java` to execute Cucumber tests
 
 ## Example Test
 
@@ -127,6 +137,7 @@ Message binaryMessage = new BinaryMessage(bytes);
 4. **Extensible**: Easy to add new message types
 5. **Modern Java**: Uses records and latest features
 6. **SOLID Principles**: Follows all SOLID principles
+7. **Type Safe**: Proper handling of Solace and custom message types
 
 ## Adding New Features
 

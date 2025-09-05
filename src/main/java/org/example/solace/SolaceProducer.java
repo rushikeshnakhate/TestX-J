@@ -69,7 +69,7 @@ public class SolaceProducer {
     
     private BytesXMLMessage createSolaceMessage(Message message) {
         if (message.getType().name().equals("TEXT") || message.getType().name().equals("JSON")) {
-            TextMessage textMessage = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
+            com.solacesystems.jcsmp.TextMessage textMessage = JCSMPFactory.onlyInstance().createMessage(com.solacesystems.jcsmp.TextMessage.class);
             textMessage.setText(message.getContentAsString());
             return textMessage;
         } else {

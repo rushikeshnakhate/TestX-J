@@ -10,44 +10,39 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SolaceConnection {
-    
+
     private final JCSMPProperties properties;
     private JCSMPSession session;
     private boolean connected = false;
-    
+
     public SolaceConnection(JCSMPProperties properties) {
         this.properties = properties;
     }
-    
+
     public void connect() throws JCSMPException {
         if (connected) {
             return;
         }
-        
+
         session = com.solacesystems.jcsmp.JCSMPFactory.onlyInstance().createSession(properties);
         session.connect();
         connected = true;
     }
-    
+
     public void disconnect() {
         if (!connected) {
             return;
         }
-        
-        try {
-            if (session != null) {
-                session.closeSession();
-            }
-        } catch (JCSMPException e) {
-            // Log error but don't throw
+        if (session != null) {
+            session.closeSession();
         }
         connected = false;
     }
-    
+
     public boolean isConnected() {
         return connected;
     }
-    
+
     public JCSMPSession getSession() {
         return session;
     }
